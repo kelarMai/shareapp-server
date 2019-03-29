@@ -1,0 +1,28 @@
+{
+  "name": "shareapp-server",
+  "version": "1.0.0",
+  "description": "the share-app's server test in lbuntu",
+  "main": "app.js",
+  "scripts": {
+    "app": "node ./bin/app.js",
+    "test": "node ./test/test_log4js.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelarMai/shareapp-server.git"
+  },
+  "author": "Mkelar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kelarMai/shareapp-server/issues"
+  },
+  "homepage": "https://github.com/kelarMai/shareapp-server#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "express": "^4.16.4",
+    "fs": "^0.0.1-security",
+    "log4js": "^4.1.0",
+    "mysql": "^2.16.0",
+    "redis": "^2.8.0"
+  }
+}

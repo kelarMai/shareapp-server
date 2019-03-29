@@ -1,0 +1,48 @@
+{
+  "appenders": {
+    "app_info": {
+      "type": "dateFile",
+      "filename": "log/app/info.log",
+      "pattern": "-yyyy-MM-dd",
+      "keepFileExt": true,
+      "alwaysIncludePattern": true,
+      "compress": true,
+      "daysToKeep": 30
+    },
+    "app_debug_flie": {
+      "type": "file",
+      "filename":"log/app/debug.log",
+      "maxLogSize": 31457280,
+      "compress": true,
+      "backups": 3
+    },
+    "mysqlapp_info": {
+      "type": "dateFile",
+      "filename": "log/mysql/info.log",
+      "pattern": "-yyyy-MM-dd",
+      "keepFileExt": true,
+      "alwaysIncludePattern": true,
+      "compress": true,
+      "daysToKeep": 30
+    },
+    "mysqlapp_debug_flie": {
+      "type": "file",
+      "filename":"log/mysql/debug.log",
+      "maxLogSize": 31457280,
+      "compress": true,
+      "backups": 3
+    },
+    "debug_console": {
+      "type": "stdout"
+    }
+  },
+  "categories": {
+    "default": {"appenders":["debug_console"],"level": "DEBUG"},
+    "appdebugi": {"appenders":["app_info"],"level":"INFO"},
+    "appdebugf": {"appenders":["app_debug_flie"],"level":"DEBUG"},
+    "mysqldebugi": {"appenders":["mysqlapp_info"],"level":"INFO"},
+    "mysqldebugf": {"appenders":["mysqlapp_debug_flie"],"level": "DEBUG"}
+  },
+  "pm2":true,
+  "pm2InstanceVar": "INSTANCE_ID"
+}
