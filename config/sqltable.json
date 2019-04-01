@@ -1,12 +1,12 @@
 {
   "user": {
-    "sn": "uint_inc",
+    "sn": "usint",
     "name": "char16",
     "loginid": "char32",
-    "password": "char255",
+    "password": "char256",
     "phone": "uint",
     
-    "index_def": ["loginid","phone"],
+    "index_def": ["phone"],
     "primary_def": "sn"
   }
 }

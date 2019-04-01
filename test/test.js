@@ -13,7 +13,7 @@
 
 // var c = new ab();
 // c.test();
-// // console.log(c.b);
+// console.log(c.b);
 
 // function test() {
 //   this.a = 1;
@@ -69,6 +69,19 @@
 //   }
 // }
 
-var a = "aa ";
-a += "bb";
-console.log(a);
+// var a = "aa ";
+// a += "bb";
+// console.log(a);
+
+// var a = "abcdefg";
+// console.log(a,a.length);
+// a = a.substring(0,a.length - 1);
+// console.log(a);
+
+// var a = [{a:"ab",b:"cd"},{a:"cd",b:"de"}];
+// for (let t in a){
+//   console.log(t);
+//   console.log(a[t].a,a[t].b);
+// }
+
+var a = sprintf("%d",1);
