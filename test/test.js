@@ -76,12 +76,16 @@
 // var a = "abcdefg";
 // console.log(a,a.length);
 // a = a.substring(0,a.length - 1);
-// console.log(a);
+
 
 // var a = [{a:"ab",b:"cd"},{a:"cd",b:"de"}];
+// a = null;
+// console.log(a);
+
 // for (let t in a){
 //   console.log(t);
-//   console.log(a[t].a,a[t].b);
+  // console.log(a[t].a,a[t].b);
 // }
 
-var a = sprintf("%d",1);
+var a = "";
+console.log(a.split(","));

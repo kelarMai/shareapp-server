@@ -2,11 +2,15 @@
   "user": {
     "sn": "usint",
     "name": "char16",
-    "loginid": "char32",
+    "txt": "char32",
     "password": "char256",
     "phone": "uint",
     
-    "index_def": ["phone"],
-    "primary_def": "sn"
+    "index_def": ["sn","name"],
+    "primary_def": "name"
+  },
+  "avator":{
+    "sn": "usint",
+    "name": "char16"
   }
 }
