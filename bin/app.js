@@ -6,6 +6,8 @@ const util = require('util');
 require('../public/log4js');
 const router_index = require('../routers/index');
 
+global.gConfig = null;
+
 
 async function readConfig(){
   try{
@@ -14,27 +16,30 @@ async function readConfig(){
     let data = fs.readFileSync('./config/app.json');
     let config = data.toString();
     if (config == '') return;
-    config = JSON.parse(config);
+    gConfig = JSON.parse(config);
   }catch(err){
-    debugc(err);
+    debugf(err);
     process.exit(1);
   }
 }
 
 function main() {
   const app = express();
-  app.use(Log4js.connectLogger(Log4js.getLogger("debugi"),{'format': ':method :url'}));
-  
-  router_index(app);
 
-  app.listen(3000);  
+  app.use(Log4js.connectLogger(Log4js.getLogger("appdebugf"),{'format': ':method :url'}));
+
+  app.use("/shareapp",router_index);
+
+  app.listen(gConfig.app_server.port,() =>{
+    debugf("startd the server in port:",gConfig.app_server.port);
+  });
 }
 
 async function run() {
   try {
     await readConfig();  
   }catch(e){
-    debugc(err);
+    debugf(err);
   }
   main();
 }

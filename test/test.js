@@ -87,5 +87,6 @@
   // console.log(a[t].a,a[t].b);
 // }
 
-var a = "";
-console.log(a.split(","));
+import express from 'express';
+
+const app = express();
