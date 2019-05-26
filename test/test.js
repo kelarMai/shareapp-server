@@ -87,6 +87,21 @@
   // console.log(a[t].a,a[t].b);
 // }
 
-import express from 'express';
 
-const app = express();
+//test bind
+// this.x = 9;    // 在浏览器中，this指向全局的 "window" 对象
+// var module1 = {
+//   x: 81,
+//   getX: function() { return this.x; }
+// };
+
+// console.log(module1.getX()); // 81
+
+// var retrieveX = module1.getX;
+// console.log(retrieveX());   
+// // 返回9 - 因为函数是在全局作用域中调用的
+
+// // 创建一个新函数，把 'this' 绑定到 module 对象
+// // 新手可能会将全局变量 x 与 module 的属性 x 混淆
+// var boundGetX = retrieveX.bind(module1);
+// console.log(boundGetX()); // 81

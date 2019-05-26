@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
-const router_login = require('../routers/login');
+const router_user = require('./user');
 
-router.use("/login",router_login);
+router.use("/user",router_user);
 
 
 module.exports = router;
