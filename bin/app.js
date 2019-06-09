@@ -16,11 +16,21 @@ async function readConfig(){
     let data = fs.readFileSync('./config/app.json');
     let config = data.toString();
     if (config == '') return;
-    gConfig = JSON.parse(config);
+    gConfig = await JSON.parse(config);
   }catch(err){
     debugf(err);
     process.exit(1);
   }
+}
+
+async function initServer(){
+  const mysql_server =  require('../public/mysql');
+  global.gSql = new mysql_server(gConfig.mysql,"./models/mysql/sqltable.json");
+
+  // const redis_server = require('../public/redis');
+  // global.gRedis = new redis_server(gConfig.redis);
+
+  require('../public/mongoose');
 }
 
 function main() {
@@ -37,8 +47,10 @@ function main() {
 
 async function run() {
   try {
-    await readConfig();  
-  }catch(e){
+    await readConfig();
+    debugf("app in run ",gConfig);
+    await initServer();
+  }catch(err){
     debugf(err);
   }
   main();

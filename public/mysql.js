@@ -36,7 +36,7 @@ class mysql_server {
     this.finish_flag = 0;
     this.finish_event = new eventEmitter();
     this.finish_event.on("finish",(name) => {
-      console.log("mysql init finish " ,name ,this.finish_flag);
+      debugi("mysql init finish " ,name ,this.finish_flag);
       this.finish_flag += 1;
       if (this.finish_flag >= 2){
         this.finish_flag = 0;
@@ -66,13 +66,13 @@ class mysql_server {
         // + "index (table_sn,column_sn)"
         + ");");
       }catch(e) {
-         console.log("public mysql :",e);
+         debugi("public mysql :",e);
     }
 
     let newtabel = fs.readFileSync(this.table_file);
     newtabel = newtabel.toString();
     if (newtabel == '') return;
-    console.log(newtabel);
+    debugi(newtabel);
     this.table_content = JSON.parse(newtabel);
 
     let compare_table = this.compare_table.bind(this);
@@ -81,10 +81,10 @@ class mysql_server {
 
   async compare_table(err,rows,fields) {
     if (err) {
-      console.log(err);
+      debugi(err);
     }
 
-    console.log(rows);
+    debugi(rows);
 
     for (let i = 0; i < rows.length; i++) {
       this.old_table_list[rows[i].id] = {};
@@ -92,7 +92,7 @@ class mysql_server {
       this.old_table_list[rows[i].id].primary_def = rows[i].primary_def;
     }
 
-    console.log(this.table_content);
+    debugi(this.table_content);
     // delete the old table
     for(let old_table in this.old_table_list) {
       if (this.table_content[old_table]) continue;
@@ -126,9 +126,9 @@ class mysql_server {
   async compare_column(err,rows,fields){
     // compare the column
     if (err){
-      console.log(err);
+      debugi(err);
     }
-    console.log(rows);
+    debugi(rows);
 
     for (let i = 0; i < rows.length; i++){
       if (this.old_column_list[rows[i].table_name] == null){
@@ -136,7 +136,7 @@ class mysql_server {
       }
       this.old_column_list[rows[i].table_name][rows[i].id] = rows[i].definition;
     }
-    console.log(this.old_column_list);
+    debugi(this.old_column_list);
     for (let old_table_name in this.old_column_list){
       if (!this.table_content[old_table_name]) continue;
 
@@ -169,44 +169,44 @@ class mysql_server {
   }
 
   async add_column(table_name,column_name,column_definition){
-    console.log("add_column ",table_name , column_name , column_definition);
+    debugi("add_column ",table_name , column_name , column_definition);
     if (!definition[column_definition]) return;
     
     let s = "alter table " + table_name + " add column " + column_name + " " + definition[column_definition] + " ;";
     this.db.query(s,(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
 
     s = "insert into column_metadata values (?,?,?);";
     this.db.query(s,[table_name,column_name,column_definition],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
   }
 
   async change_column(table_name,column_name,column_definition){
-    console.log("change_column ", table_name,column_name,column_definition);
+    debugi("change_column ", table_name,column_name,column_definition);
     if (!definition[column_definition]) return;
     let s = "update column_metadata set definition = ? where table_name = ? and id = ?;"
     this.db.query(s,[column_definition,table_name,column_name],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
 
     s = "alter table " + table_name + " modify " + column_name + " " + definition[column_definition] + " ;";
     this.db.query(s,(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });    
   }
 
   async delete_column(table_name,column_name){
-    console.log("delete_column " ,table_name,column_name);
+    debugi("delete_column " ,table_name,column_name);
     let s = "delete from column_metadata where table_name = ? and id = ?;";
     this.db.query(s,[table_name,column_name],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
 
     s = "alter table " + table_name + " drop column " + column_name + " ;";
     this.db.query(s,(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
   }
 
@@ -240,7 +240,7 @@ class mysql_server {
   }
 
   async change_index(table_name,old_index_def_list,new_index_def_list){
-    console.log("change_index" ,table_name,old_index_def_list,new_index_def_list);
+    debugi("change_index" ,table_name,old_index_def_list,new_index_def_list);
     let s = "";
     let old_index_name = "";
     let new_index_name = "";
@@ -263,23 +263,23 @@ class mysql_server {
 
     if (old_index_name != ""){
       s = "alter table " + table_name + " drop index " + old_index_name + " ;";
-      console.log(s);
+      debugi(s);
       this.db.query(s,(err) => {
-        if (err) console.log(err);
+        if (err) debugi(err);
       });
     }
 
     if (new_index_name != ""){
       s = "alter table " + table_name + " add index " + new_index_name + " ( " + new_index_def + " );";
-      console.log(s);
+      debugi(s);
       this.db.query(s,(err) => {
-        if (err) console.log(err);
+        if (err) debugi(err);
       });
     }
 
     s = "update table_metadata set index_def = ? where id  = ?;";
     this.db.query(s,[new_index_def,table_name],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
   }
 
@@ -296,48 +296,48 @@ class mysql_server {
   
 
   async change_primary(table_name,old_primary_def,new_primary_def){
-    console.log("change_primary " ,table_name,old_primary_def,new_primary_def);
+    debugi("change_primary " ,table_name,old_primary_def,new_primary_def);
     let s ;
     if (old_primary_def != ""){
       s = "alter table " + table_name + " drop primary key;";
-      console.log(s);
+      debugi(s);
       this.db.query(s,(err) => {
-        if (err) console.log(err);
+        if (err) debugi(err);
       });
     }
 
     if (new_primary_def != null){
       s = "alter table " + table_name + " add primary key (" + new_primary_def + ");";
-      console.log(s);
+      debugi(s);
       this.db.query(s,(err) => {
-        if (err) console.log(err);
+        if (err) debugi(err);
       });
     }
 
     if (new_primary_def == null) new_primary_def = "";
     s = "update table_metadata set primary_def = ? where id = ? ;";
     this.db.query(s,[new_primary_def,table_name],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
   }
 
 
   async delete_table(table_name) {
-    console.log("delete_table", table_name);
+    debugi("delete_table", table_name);
     let s = "drop table " + table_name + " ;";
     this.query(s,(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
     this.query("delete from table_metadata where id = ?;", [table_name],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
     this.query("delett from column_metadata where table_name = ?;", [table_name],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
   }
 
   async create_table(table_name) {
-    console.log("create new table: " , table_name);
+    debugi("create new table: " , table_name);
     let column_content = this.table_content[table_name];
     let index_def = "";
     let primary_def = "";
@@ -376,29 +376,31 @@ class mysql_server {
     }
     s = s.substring(0,s.length - 1);
     s += ");";
-    console.log(s);
+    debugi(s);
 
     this.db.query(s,(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
 
     // add table message into table_metadata
     s = "insert into table_metadata values (?,?,?);";
     this.db.query(s,[table_name,index_def,primary_def],(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     });
 
     // add table messge into column_metadata
     key_def = key_def.substring(0,key_def.length - 1);
     s = "insert into column_metadata values " + key_def + " ;";
     this.db.query(s,(err) => {
-      if (err) console.log(err);
+      if (err) debugi(err);
     })
   }
 }
 
-var client = new mysql_server({
-  user: "shareapp",
-  password: "123"
-},"../config/sqltable.json");
+// var client = new mysql_server({
+//   user: "shareapp",
+//   password: "123"
+// },"../models/mysql/sqltable.json");
 // client.init_table();
+
+module.exports = mysql_server;

@@ -1,16 +1,19 @@
 {
   "app_server":{
-    "port":"3000"
+    "port": 3000
   },
   "mysql":{
     "ip": "127.0.0.1",
-    "port": "3306",
+    "port": 3306,
     "user": "shareapp",
     "password": "123",
     "database": "shareapp"
   },
   "redis": {
     "ip": "127.0.0.1",
-    "port": "6379"
+    "port": 6379
+  },
+  "mongoose": {
+    "url": "mongodb://localhost:27017/shareapp"
   }
 }
