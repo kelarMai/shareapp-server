@@ -30,7 +30,8 @@ async function initServer(){
   // const redis_server = require('../public/redis');
   // global.gRedis = new redis_server(gConfig.redis);
 
-  require('../public/mongoose');
+  var mongoose = require('../public/mongoose');
+  mongoose(gConfig.mongoose.url);
 }
 
 function main() {
