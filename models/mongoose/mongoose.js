@@ -7,9 +7,11 @@ var mongoose_connection = null;
 var db = function (url){
     if (mongoose_connection == null){
         if (url == null) {
-            config = "mongodb://localhost:27017/shareapp";
+            config = "mongodb://localhost:27017/Shareapp";
         }
-        mongoose.connect(url,{useNewUrlParser:true});
+        mongoose.connect(url,{useNewUrlParser:true,keepAlive:120,poolSize:5},(err)=>{
+            debugf('there is something when connect the mongoose');
+        });
         mongoose_connection = mongoose.connection;
     }
     mongoose_connection.on('error',()=>{
