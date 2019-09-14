@@ -2,8 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
-// const Login = require('../controller/login/login');
+const captcha = require('../controller/user/captcha');
 
-// router.get('/login',Login.userLogin);
+
+router.get('/captcha/:phone_number',captcha.getCode);
 
 module.exports = router;

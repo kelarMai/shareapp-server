@@ -8,14 +8,14 @@ function testing() {
   })
 }
 
-// testing().then((result1) => {
-//   console.log("then1 " + result1);
-//   return 321;
-// }).catch((err) => {
-//   console.log("err " + err);
-// }).then((result2) => {
-//   console.log("then2 " + result2);
-// });
+testing().then((result1) => {
+  console.log("then1 " + result1);
+  return 321;
+}).catch((err) => {
+  console.log("err " + err);
+}).then((result2) => {
+  console.log("then2 " + result2);
+});
 
 
 async function new_fun() {

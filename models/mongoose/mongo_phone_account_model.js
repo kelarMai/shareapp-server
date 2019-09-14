@@ -6,8 +6,8 @@ const phone_account = new mongoose.Schema({
         type:String,
         required:true,
     },
-    verification_code:String,
-    verification_code_time:{
+    captcha_code:String,
+    captcha_code_time:{
         type:Date,
         default:new Date
     },

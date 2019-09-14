@@ -1,20 +1,41 @@
+// // connect the mysql and test alone
+// const mysql = require('mysql');
 
-const mysql = require('mysql');
+// var client = mysql.createConnection({
+//   host : 'localhost',
+//   user:'root',
+//   password:'123',
+//   database:'shareapp'
+// });
+// client.connect();
 
-var client = mysql.createConnection({
-  host : 'localhost',
-  user:'root',
-  password:'123',
-  database:'shareapp'
-});
-client.connect();
-client.query('select * from test',(err,data,fields)=>{
+const mysql_server =  require('../models/mysql/mysql');
+var client = new mysql_server({},"../models/mysql/sqltable.json");
+
+var phone_number = "123456789";
+var captcha_code = "a1d5";
+var captcha_code_time = Date.now();
+var associated_account = "123";
+
+client.query(`replace into phone 
+              (phone_number,captcha_code,captcha_code_time,associated_account) 
+              values (?,?,?,?);`,
+              [phone_number,captcha_code,captcha_code_time,associated_account],
+              (err,data,fields)=>{
+                if (err) console.log(err);
+                else{
+                  console.log(data);
+                  console.log(fields);
+                }
+              });
+// client.query(`select * from phone where phone_number = ${phone_number}`,(err,data,fields)=>{
+client.query(`select * from phone where phone_number = '123321';`,(err,data,fields)=>{
   if (err) 
     console.log(err);
   else{
-    // console.log(fields);
+    console.log(data);
     for (let i = 0; i < data.length;i++){
-      console.log(data[i].sn, " ", data[i].name);
+      console.log(data[i]);
     }
   }
 });

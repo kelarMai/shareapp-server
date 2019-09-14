@@ -22,7 +22,7 @@ http://ip_normal/login/
 |login_type|true|uint|选择登录方式
 |phone_number|false|string|
 |password|false|string|
-|verification_code|false|string|
+|captcha_code|false|string|
 |session_id|false|string|
 |phone_mac|false|string|
 
@@ -30,7 +30,7 @@ http://ip_normal/login/
 1. login_type = 101
     >普通登录模式，必选参数：phone_number,password,phone_mac
 2. login_type = 102
-    >普通注册模式，必选参数：phone_number,password,verification_code
+    >普通注册模式，必选参数：phone_number,password,captcha_code
 3. login_type = 103
     >会话登录模式，必选参数：phone_number,session_id,phone_mac
 
@@ -45,7 +45,7 @@ http://ip_normal/login/
 #### 请求方法和URL：
 ```
 GET
-http://ip_normal/verification_code/:phone_number
+http://ip_normal/captcha_code/:phone_number
 ```
 #### 参数：
 |参数|是否必选|类型|说明|

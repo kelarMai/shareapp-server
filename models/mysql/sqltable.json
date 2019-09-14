@@ -9,8 +9,12 @@
     "index_def": ["sn","name"],
     "primary_def": "name"
   },
-  "avator":{
-    "sn": "usint",
-    "name": "char16"
+  "phone":{
+    "phone_number":"char16",
+    "captcha_code":"char8",
+    "captcha_code_time":"ubint",
+    "associated_account":"char128",
+
+    "primary_def": "phone_number"
   }
 }

@@ -1,4 +1,6 @@
 
+debugi = console.log;
+
 const fs = require('fs');
 const util = require('util');
 const eventEmitter = require('events').EventEmitter;
@@ -10,10 +12,18 @@ var definition = {
   uint_inc : "int unsigned not null auto_increment",
   usint : "smallint unsigned not null default 0",
   uint : "int unsigned not null default 0",
+  int : "int not null default 0",
+  bint : "bigint not null default 0",
+  ubint : "bigint unsigned not null default 0",
+  char8 : "char(8) character set utf8 collate utf8_bin not null default ''",
   char16 : "char(16) character set utf8 collate utf8_bin not null default ''",
   char32 : "char(32) character set utf8 collate utf8_bin not null default ''",
   char128 : "char(128) character set utf8 collate utf8_bin not null default ''",
-  char256 : "varchar(256) character set utf8 collate utf8_bin not null default ''",
+  charmax : "char character set utf8 collate utf8_bin not null default ''",
+  vchar16 : "varchar(16) character set utf8 collate utf8_bin not null default ''",
+  vchar32 : "varchar(32) character set utf8 collate utf8_bin not null default ''",
+  vchar128 : "varchar(128) character set utf8 collate utf8_bin not null default ''",
+  vcharmax : "varchar character set utf8 collate utf8_bin not null default ''",
 }
 
 class mysql_server {
@@ -55,15 +65,11 @@ class mysql_server {
         + " id " + definition.char16 + ","
         + " index_def " + definition.char128 + ","
         + " primary_def " + definition.char32
-        // + ","
-        // + "primary key (sn)"
         + ");");
       await this.query("create table if not exists column_metadata ("
         + " table_name " + definition.char16 + ","
         + " id " + definition.char16 + ","
         + " definition " + definition.char32
-        // + ","
-        // + "index (table_sn,column_sn)"
         + ");");
       }catch(e) {
          debugi("public mysql :",e);
@@ -138,8 +144,11 @@ class mysql_server {
     }
     debugi(this.old_column_list);
     for (let old_table_name in this.old_column_list){
-      if (!this.table_content[old_table_name]) continue;
-
+      if (this.table_content[old_table_name] == null){
+        this.delete_column(old_table_name,null);
+        delete this.old_column_list[old_table_name];
+        continue;
+      }
       for (let old_column_name in this.old_column_list[old_table_name]){
         if (this.table_content[old_table_name][old_column_name] == null){
           this.delete_column(old_table_name,old_column_name);
@@ -199,15 +208,23 @@ class mysql_server {
 
   async delete_column(table_name,column_name){
     debugi("delete_column " ,table_name,column_name);
-    let s = "delete from column_metadata where table_name = ? and id = ?;";
-    this.db.query(s,[table_name,column_name],(err) => {
-      if (err) debugi(err);
-    });
-
-    s = "alter table " + table_name + " drop column " + column_name + " ;";
-    this.db.query(s,(err) => {
-      if (err) debugi(err);
-    });
+    if (column_name == null){
+      let s = "delete from column_metadata where table_name = ?;";
+      this.db.query(s,[table_name],(err)=>{
+        if (err) debugi(err);  
+      });
+      
+    }else{
+      let s = "delete from column_metadata where table_name = ? and id = ?;";
+      this.db.query(s,[table_name,column_name],(err) => {
+        if (err) debugi(err);
+      });
+  
+      s = "alter table " + table_name + " drop column " + column_name + " ;";
+      this.db.query(s,(err) => {
+        if (err) debugi(err);
+      });
+    }
   }
 
   async compare_index(){
@@ -331,7 +348,7 @@ class mysql_server {
     this.query("delete from table_metadata where id = ?;", [table_name],(err) => {
       if (err) debugi(err);
     });
-    this.query("delett from column_metadata where table_name = ?;", [table_name],(err) => {
+    this.query("delete from column_metadata where table_name = ?;", [table_name],(err) => {
       if (err) debugi(err);
     });
   }
@@ -401,6 +418,5 @@ class mysql_server {
 //   user: "shareapp",
 //   password: "123"
 // },"../models/mysql/sqltable.json");
-// client.init_table();
 
 module.exports = mysql_server;

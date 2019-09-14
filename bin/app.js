@@ -27,9 +27,6 @@ async function initServer(){
   const mysql_server =  require('../models/mysql/mysql');
   global.gSql = new mysql_server(gConfig.mysql,"./models/mysql/sqltable.json");
 
-  // const redis_server = require('../public/redis');
-  // global.gRedis = new redis_server(gConfig.redis);
-
   var mongoose = require('../models/mongoose/mongoose');
   mongoose(gConfig.mongoose.url);
 }
