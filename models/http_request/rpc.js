@@ -36,11 +36,11 @@ function fake_rpc(options){
   }
 }
 
-var rpc = function(options,test){
-  if (test){
-    return real_rpc(options);
-  }else{
+var rpc = function(options,real){
+  if (real){
     return fake_rpc(options);
+  }else{
+    return real_rpc(options);
   }
 }
 

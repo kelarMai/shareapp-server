@@ -28,13 +28,28 @@ client.query(`replace into phone
                   console.log(fields);
                 }
               });
+client.query(`replace into phone 
+              (phone_number,captcha_code,captcha_code_time,associated_account) 
+              values (?,?,?,?);`,
+              ["","",0,"associated_account"],
+              (err,data,fields)=>{
+                if (err) console.log(err);
+                else{
+                  console.log(data);
+                  console.log(fields);
+                }
+              });
 // client.query(`select * from phone where phone_number = ${phone_number}`,(err,data,fields)=>{
-client.query(`select * from phone where phone_number = '123321';`,(err,data,fields)=>{
+client.query(`select * from phone ;`,(err,data,fields)=>{
   if (err) 
     console.log(err);
   else{
     console.log(data);
     for (let i = 0; i < data.length;i++){
+      if (data[i].phone_number == ""){
+        console.log(" not null and would be an empty string");
+      }
+
       console.log(data[i]);
     }
   }

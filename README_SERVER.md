@@ -17,7 +17,7 @@ other tools:
 	https://pm2.io/doc/en/runtime/overview/
   3. pm2-intercom
 	https://log4js-node.github.io/log4js-node/clustering.html
-  4. redis 做缓存 v4.0.9
+  4. mongodb 做缓存 v4.0.9
   5. mysql 做数据持久化 Ver 14.14 Distrib 5.7.25,
   		需根据 app.json 文件，提前创建用户，限制用户权限和数据库
   6. 还是得需要添加 rpc 框架
